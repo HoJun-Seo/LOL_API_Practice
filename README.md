@@ -1,5 +1,5 @@
 # LOL_API_Practice
-- 국비 학원 프로젝트 진행을 대비 LOL API 실습용 Repository 입니다.
+- 국비 학원 프로젝트 진행을 대비한 LOL API 실습용 Repository 입니다.
 
 ## 현재까지 실습한 API
   ### 각 지역별 마스터 티어 리스트 출력
