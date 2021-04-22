@@ -37,8 +37,8 @@
 				error:function(xhr, status, error){
 					alert(error);
 				},
-				success:function(json){
-					$('#SearchSummoner').html(json);
+				success:function(data){
+					$('#SearchSummoner').html(data);
 				}
 			});
 		});
