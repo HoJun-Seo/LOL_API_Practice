@@ -9,7 +9,21 @@
 <script type="text/javascript">
 	$(function () {
 		$('#matchHistory').click(function () {
-			console.log("${summonerDTO.puuid}");
+			var puuid = "${summonerDTO.puuid}";
+			
+			$.ajax({
+				type : 'get',
+				url : '${pageContext.request.contextPath}/LOLAPI/MatchHistory.do?puuid='+puuid,
+				data : '',
+				dataType : '',
+				error:function(xhr, status, error){
+					alert(error);
+				},
+				success:function(data){
+					$('#MatchHistory').html(data)
+				}
+			});
+			
 		});
 	});
 </script>
@@ -21,5 +35,7 @@
 	최근 정보 갱신 날짜 : ${summonerDTO.revisionDate} <br>
 	
 	최근 전적 확인하기 : <input type="button" value="전적 검색" name="matchHistory" id="matchHistory">
+	<hr>
+	<div id="MatchHistory"></div>
 </body>
 </html>

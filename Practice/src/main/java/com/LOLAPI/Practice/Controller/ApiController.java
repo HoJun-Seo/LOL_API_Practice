@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
@@ -16,15 +17,17 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.LOLAPI.Practice.DTO.MasterTierDTO;
 import com.LOLAPI.Practice.DTO.SummonerDTO;
+import com.mysql.cj.xdevapi.JsonArray;
 
 @Controller
 public class ApiController {
 	
-	String developKey = "RGAPI-8df9044c-61c9-4432-95da-cd4270427064";
+	String developKey = "RGAPI-9e3e12eb-dde7-433f-b05e-27290f667327";
 	String apiURL = "";
 	URL riotURL = null;
 	HttpURLConnection urlConnection = null;
@@ -100,5 +103,32 @@ public class ApiController {
 		}
 		
 		return "searchSummoner";
+	}
+	
+	@GetMapping("/LOLAPI/MatchHistory.do")
+	public String printMatchHistory(@RequestParam("puuid") String puuid, Model model) {
+		try {
+			apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/"+puuid+"/ids?start=0&count=20?api_key="+developKey;
+			riotURL = new URL(apiURL);
+			urlConnection = (HttpURLConnection)riotURL.openConnection();
+			urlConnection.setRequestMethod("GET");
+			
+			br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+			String result="";
+			String line="";
+			while((line=br.readLine()) != null) {
+				result += line;
+			}
+			
+			JSONArray matchList = new JSONArray(result);
+			for(int i = 0; i < matchList.length(); i++) {
+				System.out.println(matchList.get(i));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			
+			
+		return "matchHistory";
 	}
 }
