@@ -27,7 +27,7 @@ import com.mysql.cj.xdevapi.JsonArray;
 @Controller
 public class ApiController {
 	
-	String developKey = "RGAPI-9e3e12eb-dde7-433f-b05e-27290f667327";
+	String developKey = "RGAPI-352717e3-f624-4f7c-b14e-565fc6050dd0";
 	String apiURL = "";
 	URL riotURL = null;
 	HttpURLConnection urlConnection = null;
@@ -108,7 +108,7 @@ public class ApiController {
 	@GetMapping("/LOLAPI/MatchHistory.do")
 	public String printMatchHistory(@RequestParam("puuid") String puuid, Model model) {
 		try {
-			apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/"+puuid+"/ids?start=0&count=20?api_key="+developKey;
+			apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/"+puuid+"/ids?start="+0+"&count="+20+"&api_key="+developKey;
 			riotURL = new URL(apiURL);
 			urlConnection = (HttpURLConnection)riotURL.openConnection();
 			urlConnection.setRequestMethod("GET");
@@ -121,8 +121,27 @@ public class ApiController {
 			}
 			
 			JSONArray matchList = new JSONArray(result);
-			for(int i = 0; i < matchList.length(); i++) {
-				System.out.println(matchList.get(i));
+			String matchId = (String) matchList.get(0);
+			try {
+				apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/"+matchId+"?api_key="+developKey;
+				riotURL = new URL(apiURL);
+				urlConnection = (HttpURLConnection)riotURL.openConnection();
+				urlConnection.setRequestMethod("GET");
+				
+				br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+				result="";
+				line="";
+				while((line=br.readLine()) != null) {
+					result += line;
+				}
+				JSONObject jsonObject = new JSONObject(result);
+				JSONObject metadata = (JSONObject) jsonObject.get("metadata");
+				JSONArray participants = metadata.getJSONArray("participants");
+				for(int i = 0; i < participants.length(); i++) {
+					System.out.println(participants.get(i));
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
