@@ -24,7 +24,7 @@ import com.LOLAPI.Practice.DTO.SummonerDTO;
 @Controller
 public class ApiController {
 	
-	String developKey = "RGAPI-de008262-cfe4-402e-9206-e45fd460e498";
+	String developKey = "RGAPI-0d729973-77ce-492f-8454-df90934550d0";
 	String apiURL = "";
 	URL riotURL = null;
 	HttpURLConnection urlConnection = null;
